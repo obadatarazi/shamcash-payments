@@ -1,0 +1,577 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ShamCash Payments 1.0.0\n"
+"Report-Msgid-Bugs-To: https://ok2code.com\n"
+"Last-Translator: OkToCode\n"
+"Language-Team: Arabic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-13 00:00+0000\n"
+"PO-Revision-Date: 2026-10-13 00:00+0000\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+
+#: includes/blocks/class-shamcash-blocks.php:64
+#: includes/class-shamcash-gateway.php:25
+#: includes/class-shamcash-gateway.php:33
+#: includes/class-shamcash-gateway.php:55
+msgid "ShamCash"
+msgstr "شام كاش"
+
+#: includes/class-shamcash-gateway.php:26
+msgid "Accept payments via ShamCash e-wallet. Customers are redirected to complete payment securely."
+msgstr "اقبل المدفوعات عبر محفظة شام كاش الإلكترونية. يتم توجيه العملاء لإتمام الدفع بأمان."
+
+#: includes/class-shamcash-gateway.php:46
+msgid "Enable/Disable"
+msgstr "تفعيل / تعطيل"
+
+#: includes/class-shamcash-gateway.php:48
+msgid "Enable ShamCash Payments"
+msgstr "تفعيل مدفوعات شام كاش"
+
+#: includes/class-shamcash-gateway.php:52
+msgid "Title"
+msgstr "العنوان"
+
+#: includes/class-shamcash-gateway.php:54
+msgid "Payment method title shown to customers at checkout."
+msgstr "عنوان طريقة الدفع الذي يظهر للعملاء عند الدفع."
+
+#: includes/class-shamcash-gateway.php:59
+msgid "Description"
+msgstr "الوصف"
+
+#: includes/class-shamcash-gateway.php:61
+msgid "Payment method description shown to customers at checkout."
+msgstr "وصف طريقة الدفع الذي يظهر للعملاء عند الدفع."
+
+#: includes/class-shamcash-gateway.php:66
+msgid "API Credentials"
+msgstr "بيانات اعتماد الواجهة البرمجية"
+
+#: includes/class-shamcash-gateway.php:68
+msgid "These values are provided when you create a service in the ShamCash merchant dashboard. Keep the Secret Key private."
+msgstr "يتم توفير هذه القيم عند إنشاء خدمة في لوحة تحكم تاجر شام كاش. احتفظ بالمفتاح السري خاصاً."
+
+#: includes/class-shamcash-gateway.php:71
+msgid "Agent Key"
+msgstr "مفتاح الوكيل"
+
+#: includes/class-shamcash-gateway.php:73
+msgid "Your ShamCash agent key."
+msgstr "مفتاح وكيل شام كاش الخاص بك."
+
+#: includes/class-shamcash-gateway.php:78
+msgid "Secret Key"
+msgstr "المفتاح السري"
+
+#: includes/class-shamcash-gateway.php:80
+msgid "Base64-encoded 32-byte secret. Never share this value."
+msgstr "سر مشفر بـ Base64 بطول 32 بايت. لا تشارك هذه القيمة أبداً."
+
+#: includes/class-shamcash-gateway.php:85
+msgid "Base URL"
+msgstr "الرابط الأساسي"
+
+#: includes/class-shamcash-gateway.php:87
+msgid "ShamCash API base URL (no trailing slash)."
+msgstr "رابط واجهة شام كاش الأساسي (بدون شرطة مائلة في النهاية)."
+
+#: includes/class-shamcash-gateway.php:92
+msgid "Test Connection"
+msgstr "اختبار الاتصال"
+
+#: includes/class-shamcash-gateway.php:97
+msgid "Callback & Redirect"
+msgstr "الرد والاسترجاع"
+
+#. translators: %s: webhook URL
+#: includes/class-shamcash-gateway.php:101
+#, php-format
+msgid "Built-in Webhook URL (recommended): %s"
+msgstr "رابط الـ Webhook المدمج (موصى به): %s"
+
+#: includes/class-shamcash-gateway.php:106
+msgid "Custom Callback URL"
+msgstr "رابط الرد المخصص"
+
+#: includes/class-shamcash-gateway.php:108
+msgid "Leave empty to use the secure built-in webhook endpoint."
+msgstr "اتركه فارغاً لاستخدام نقطة نهاية الـ Webhook الآمنة المدمجة."
+
+#: includes/class-shamcash-gateway.php:114
+msgid "Custom Redirect URL"
+msgstr "رابط الاسترجاع المخصص"
+
+#: includes/class-shamcash-gateway.php:116
+msgid "Where the customer returns after payment. Leave empty to use the order thank-you page."
+msgstr "المكان الذي يعود إليه العميل بعد الدفع. اتركه فارغاً لاستخدام صفحة شكر الطلب."
+
+#: includes/class-shamcash-gateway.php:121
+msgid "Order Status Mapping"
+msgstr "تعيين حالة الطلب"
+
+#: includes/class-shamcash-gateway.php:125
+msgid "Status after successful payment"
+msgstr "الحالة بعد الدفع الناجح"
+
+#: includes/class-shamcash-gateway.php:127
+msgid "WooCommerce order status set when ShamCash confirms payment."
+msgstr "حالة طلب ووكومرس التي تُعيَّن عندما يؤكد شام كاش الدفع."
+
+#: includes/class-shamcash-gateway.php:130
+msgid "Processing"
+msgstr "قيد المعالجة"
+
+#: includes/class-shamcash-gateway.php:131
+msgid "Completed"
+msgstr "مكتمل"
+
+#: includes/class-shamcash-gateway.php:132
+msgid "On hold"
+msgstr "قيد الانتظار"
+
+#: includes/class-shamcash-gateway.php:137
+msgid "Status when bill expires"
+msgstr "الحالة عند انتهاء صلاحية الفاتورة"
+
+#: includes/class-shamcash-gateway.php:139
+msgid "Status used when the customer does not pay within the time limit."
+msgstr "الحالة المستخدمة عندما لا يدفع العميل خلال المهلة المحددة."
+
+#: includes/class-shamcash-gateway.php:142
+msgid "Failed"
+msgstr "فشل"
+
+#: includes/class-shamcash-gateway.php:143
+msgid "Cancelled"
+msgstr "ملغى"
+
+#: includes/class-shamcash-gateway.php:144
+msgid "Pending payment"
+msgstr "في انتظار الدفع"
+
+#: includes/class-shamcash-gateway.php:149
+msgid "Email Notifications"
+msgstr "إشعارات البريد الإلكتروني"
+
+#: includes/class-shamcash-gateway.php:151
+msgid "Optional notifications sent to store administrators."
+msgstr "إشعارات اختيارية تُرسل إلى مسؤولي المتجر."
+
+#: includes/class-shamcash-gateway.php:154
+msgid "Payment received"
+msgstr "تم استلام الدفع"
+
+#: includes/class-shamcash-gateway.php:156
+msgid "Send email when a payment is successfully received"
+msgstr "إرسال بريد إلكتروني عند استلام الدفع بنجاح"
+
+#: includes/class-shamcash-gateway.php:160
+msgid "Bill expired"
+msgstr "انتهت صلاحية الفاتورة"
+
+#: includes/class-shamcash-gateway.php:162
+msgid "Send email when a bill expires without payment"
+msgstr "إرسال بريد إلكتروني عند انتهاء صلاحية الفاتورة دون دفع"
+
+#: includes/class-shamcash-gateway.php:166
+msgid "Email recipients"
+msgstr "مستلمو البريد"
+
+#: includes/class-shamcash-gateway.php:168
+msgid "Comma-separated list of emails. Leave empty to use the site admin email."
+msgstr "قائمة بريد إلكتروني مفصولة بفواصل. اتركه فارغاً لاستخدام بريد مسؤول الموقع."
+
+#: includes/class-shamcash-gateway.php:174
+msgid "Debug Log"
+msgstr "سجل التصحيح"
+
+#: includes/class-shamcash-gateway.php:176
+msgid "Enable logging"
+msgstr "تفعيل التسجيل"
+
+#: includes/class-shamcash-gateway.php:178
+msgid "Logs appear under WooCommerce → Status → Logs (source: shamcash-payments). Secrets are never written."
+msgstr "تظهر السجلات تحت ووكومرس ← الحالة ← السجلات (المصدر: shamcash-payments). لا تُكتب الأسرار أبداً."
+
+#: includes/class-shamcash-gateway.php:370
+#: includes/class-shamcash-gateway.php:510
+#: includes/class-shamcash-order-handler.php:49
+msgid "Order not found."
+msgstr "الطلب غير موجود."
+
+#: includes/class-shamcash-gateway.php:376
+msgid "ShamCash is not configured. Please contact the store owner."
+msgstr "شام كاش غير مُعد. يرجى الاتصال بمالك المتجر."
+
+#. translators: %s: currency code
+#: includes/class-shamcash-gateway.php:388
+#, php-format
+msgid "Currency %s is not supported by ShamCash."
+msgstr "العملة %s غير مدعومة من شام كاش."
+
+#: includes/class-shamcash-gateway.php:462
+msgid "Unable to create ShamCash payment. Please try again."
+msgstr "تعذر إنشاء دفعة شام كاش. يرجى المحاولة مرة أخرى."
+
+#: includes/class-shamcash-gateway.php:466
+msgid "Payment service temporarily unavailable. Please try again later."
+msgstr "خدمة الدفع غير متاحة مؤقتاً. يرجى المحاولة لاحقاً."
+
+#: includes/class-shamcash-gateway.php:470
+msgid "An unexpected error occurred. Please try again."
+msgstr "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+
+#. translators: 1: bill number
+#: includes/class-shamcash-gateway.php:433
+#, php-format
+msgid "ShamCash bill created: %s. Customer redirected to payment page."
+msgstr "تم إنشاء فاتورة شام كاش: %s. تم توجيه العميل إلى صفحة الدفع."
+
+#: includes/class-shamcash-gateway.php:515
+msgid "No ShamCash bill found for this order."
+msgstr "لم يتم العثور على فاتورة شام كاش لهذا الطلب."
+
+#: includes/class-shamcash-gateway.php:520
+msgid "ShamCash is not configured."
+msgstr "شام كاش غير مُعد."
+
+#: includes/class-shamcash-gateway.php:543
+msgid "Refund request failed."
+msgstr "فشل طلب الاسترداد."
+
+#. translators: 1: amount, 2: transaction id
+#: includes/class-shamcash-gateway.php:549
+#, php-format
+msgid "ShamCash refund of %1$s processed. Transaction ID: %2$s"
+msgstr "تم معالجة استرداد شام كاش بمبلغ %1$s. رقم المعاملة: %2$s"
+
+#. translators: 1: transaction id
+#: includes/class-shamcash-webhook.php:226
+#, php-format
+msgid "ShamCash payment completed. Transaction ID: %s"
+msgstr "اكتمل دفع شام كاش. رقم المعاملة: %s"
+
+#: includes/class-shamcash-webhook.php:232
+msgid "Status updated by ShamCash webhook."
+msgstr "تم تحديث الحالة بواسطة Webhook شام كاش."
+
+#: includes/class-shamcash-webhook.php:251
+msgid "ShamCash bill expired (customer did not complete payment within the time limit)."
+msgstr "انتهت صلاحية فاتورة شام كاش (لم يكمل العميل الدفع خلال المهلة المحددة)."
+
+#: includes/class-shamcash-order-handler.php:31
+msgid "ShamCash Payment"
+msgstr "دفع شام كاش"
+
+#: includes/class-shamcash-order-handler.php:59
+msgid "No ShamCash bill associated with this order."
+msgstr "لا توجد فاتورة شام كاش مرتبطة بهذا الطلب."
+
+#: includes/class-shamcash-order-handler.php:63
+msgid "Bill No"
+msgstr "رقم الفاتورة"
+
+#: includes/class-shamcash-order-handler.php:66
+msgid "Initial Status ID"
+msgstr "معرف الحالة الأولي"
+
+#: includes/class-shamcash-order-handler.php:70
+msgid "Last Webhook Status"
+msgstr "آخر حالة Webhook"
+
+#: includes/class-shamcash-order-handler.php:75
+msgid "Open Payment Page"
+msgstr "فتح صفحة الدفع"
+
+#: includes/class-shamcash-order-handler.php:87
+msgid "ShamCash Bill"
+msgstr "فاتورة شام كاش"
+
+#. translators: %s: settings link HTML
+#: includes/class-shamcash-plugin.php:91
+#, php-format
+msgid "Please configure your ShamCash API credentials to start accepting payments. %s"
+msgstr "يرجى تكوين بيانات اعتماد واجهة شام كاش لبدء قبول المدفوعات. %s"
+
+#: includes/class-shamcash-plugin.php:92
+msgid "Go to settings"
+msgstr "الانتقال إلى الإعدادات"
+
+#: includes/class-shamcash-settings.php:59
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: includes/class-shamcash-connection-tester.php:81
+#: includes/class-shamcash-security.php:25
+msgid "You do not have permission to perform this action."
+msgstr "ليس لديك صلاحية لتنفيذ هذا الإجراء."
+
+#: includes/class-shamcash-security.php:26
+msgid "Unauthorized"
+msgstr "غير مصرح"
+
+#: includes/class-shamcash-security.php:39
+msgid "Security check failed. Please refresh the page and try again."
+msgstr "فشل فحص الأمان. يرجى تحديث الصفحة والمحاولة مرة أخرى."
+
+#: includes/class-shamcash-security.php:40
+msgid "Security Error"
+msgstr "خطأ أمني"
+
+#: includes/blocks/class-shamcash-blocks.php:65
+#: includes/class-shamcash-gateway.php:34
+#: includes/class-shamcash-gateway.php:62
+msgid "Pay securely with ShamCash e-wallet."
+msgstr "ادفع بأمان باستخدام محفظة شام كاش الإلكترونية."
+
+#. Plugin Name of the plugin
+#: shamcash-payments.php
+#: includes/class-shamcash-plugin.php:86
+msgid "ShamCash Payments"
+msgstr "مدفوعات شام كاش"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: shamcash-payments.php
+msgid "https://sy.linkedin.com/in/obada-tarazi"
+msgstr "https://sy.linkedin.com/in/obada-tarazi"
+
+#. Description of the plugin
+#: shamcash-payments.php
+msgid "Accept ShamCash payments in WooCommerce. Create bills, process refunds, handle encrypted webhooks, and manage transactions with a clean admin experience. Fully translated (English + Arabic)."
+msgstr "اقبل مدفوعات شام كاش في ووكومرس. أنشئ الفواتير، وعالج الاستردادات، وتعامل مع إشعارات Webhook المشفّرة، وأدر المعاملات بتجربة إدارة نظيفة. مترجم بالكامل (الإنجليزية + العربية)."
+
+#. Author of the plugin
+#: shamcash-payments.php
+msgid "Obada Altarazi"
+msgstr "عبادة الترزي"
+
+#: includes/class-shamcash-connection-tester.php:69
+msgid "Testing..."
+msgstr "جاري الاختبار..."
+
+#: includes/class-shamcash-connection-tester.php:70
+msgid "Connection successful"
+msgstr "الاتصال ناجح"
+
+#: includes/class-shamcash-connection-tester.php:71
+msgid "Connection failed"
+msgstr "فشل الاتصال"
+
+#: includes/class-shamcash-connection-tester.php:106
+msgid "Please enter Agent Key, Secret Key and Base URL first."
+msgstr "يرجى إدخال مفتاح الوكيل والمفتاح السري والرابط الأساسي أولاً."
+
+#: includes/class-shamcash-connection-tester.php:112
+msgid "Base URL is not allowed. Use the saved Base URL or an official ShamCash host."
+msgstr "الرابط الأساسي غير مسموح. استخدم الرابط المحفوظ أو مضيفاً رسمياً لشام كاش."
+
+#. translators: %s: error message
+#: includes/class-shamcash-connection-tester.php:127
+#, php-format
+msgid "Invalid credentials: %s"
+msgstr "بيانات الاعتماد غير صالحة: %s"
+
+#: includes/class-shamcash-connection-tester.php:140
+msgid "Connection successful. Credentials verified with ShamCash servers."
+msgstr "الاتصال ناجح. تم التحقق من بيانات الاعتماد بنجاح مع خوادم شام كاش."
+
+#. translators: %s: API message
+#: includes/class-shamcash-connection-tester.php:162
+#, php-format
+msgid "Successfully reached the server (encryption & key verified). API message: %s"
+msgstr "تم الاتصال بالخادم بنجاح (تم التحقق من التشفير والمفتاح). رسالة API: %s"
+
+#. translators: %s: error details
+#: includes/class-shamcash-connection-tester.php:172
+#, php-format
+msgid "Could not reach ShamCash server. Check Base URL or network. Details: %s"
+msgstr "تعذر الوصول إلى خادم شام كاش. تحقق من الرابط الأساسي أو الشبكة. التفاصيل: %s"
+
+#: includes/class-shamcash-connection-tester.php:179
+msgid "Encryption/decryption failed. Please check the Secret Key."
+msgstr "فشل التشفير/فك التشفير. تحقق من المفتاح السري."
+
+#: includes/class-shamcash-connection-tester.php:183
+msgid "An unexpected error occurred during the test."
+msgstr "حدث خطأ غير متوقع أثناء الاختبار."
+
+#: includes/class-shamcash-connection-tester.php:221
+msgid "Connection failed: invalid Agent Key (1701)."
+msgstr "فشل الاتصال: مفتاح الوكيل غير صالح (1701)."
+
+#: includes/class-shamcash-connection-tester.php:222
+msgid "Connection failed: agent is not active (1702)."
+msgstr "فشل الاتصال: الوكيل غير نشط (1702)."
+
+#: includes/class-shamcash-connection-tester.php:223
+msgid "Connection failed: invalid encrypted data / Secret Key (1705)."
+msgstr "فشل الاتصال: بيانات مشفّرة / مفتاح سري غير صالح (1705)."
+
+#: includes/class-shamcash-connection-tester.php:224
+msgid "Connection failed: account is blocked (1706)."
+msgstr "فشل الاتصال: الحساب محظور (1706)."
+
+#. translators: 1: result code, 2: API message
+#: includes/class-shamcash-connection-tester.php:227
+#, php-format
+msgid "Connection failed (%1$d): %2$s"
+msgstr "فشل الاتصال (%1$d): %2$s"
+
+#: includes/class-shamcash-gateway.php:94
+msgid "Click to verify your credentials with ShamCash servers (read-only check)."
+msgstr "انقر للتحقق من بيانات الاعتماد مع خوادم شام كاش (فحص للقراءة فقط)."
+
+#. translators: %s: last 4 characters of the saved secret
+#: includes/class-shamcash-gateway.php:223
+#, php-format
+msgid "Saved, ends in %s. Leave blank to keep the current secret."
+msgstr "محفوظ، وينتهي بـ %s. اتركه فارغاً للإبقاء على السر الحالي."
+
+#: includes/class-shamcash-gateway.php:267
+msgid "Secret Key must be a Base64-encoded 32-byte value."
+msgstr "يجب أن يكون المفتاح السري قيمة Base64 بطول 32 بايت."
+
+#: includes/class-shamcash-gateway.php:280
+msgid "Base URL must be a valid http or https URL."
+msgstr "يجب أن يكون الرابط الأساسي عنوان http أو https صالحاً."
+
+#: includes/class-shamcash-gateway.php:298
+msgid "Custom Callback URL must be a valid http or https URL."
+msgstr "يجب أن يكون رابط الرد المخصص عنوان http أو https صالحاً."
+
+#: includes/class-shamcash-gateway.php:316
+msgid "Custom Redirect URL must be a valid http or https URL."
+msgstr "يجب أن يكون رابط الاسترجاع المخصص عنوان http أو https صالحاً."
+
+#: includes/class-shamcash-gateway.php:347
+msgid "One or more email recipients are invalid."
+msgstr "عنوان بريد إلكتروني واحد أو أكثر غير صالح."
+
+#: includes/class-shamcash-gateway.php:477
+msgid "Unable to create a unique ShamCash payment bill after several attempts. Please try again or contact support."
+msgstr "تعذر إنشاء فاتورة دفع شام كاش فريدة بعد عدة محاولات. يرجى المحاولة مرة أخرى أو الاتصال بالدعم."
+
+#: includes/class-shamcash-gateway.php:618
+msgid "Test Connection Now"
+msgstr "اختبار الاتصال الآن"
+
+#. translators: 1: site name, 2: order number
+#: includes/class-shamcash-mailer.php:30
+#, php-format
+msgid "[%1$s] ShamCash payment received – Order #%2$s"
+msgstr "[%1$s] تم استلام دفع شام كاش – الطلب #%2$s"
+
+#. translators: 1: order number, 2: bill no, 3: transaction id, 4: amount, 5: customer name, 6: order URL
+#: includes/class-shamcash-mailer.php:41
+#, php-format
+msgid ""
+"A ShamCash payment was successfully received.\n"
+"\n"
+"Order: #%1$s\n"
+"Bill No: %2$s\n"
+"Transaction ID: %3$s\n"
+"Amount: %4$s\n"
+"Customer: %5$s\n"
+"\n"
+"View order: %6$s"
+msgstr "تم استلام دفع شام كاش بنجاح.\n\nالطلب: #%1$s\nرقم الفاتورة: %2$s\nرقم المعاملة: %3$s\nالمبلغ: %4$s\nالعميل: %5$s\n\nعرض الطلب: %6$s"
+
+#. translators: 1: site name, 2: order number
+#: includes/class-shamcash-mailer.php:67
+#, php-format
+msgid "[%1$s] ShamCash bill expired – Order #%2$s"
+msgstr "[%1$s] انتهت صلاحية فاتورة شام كاش – الطلب #%2$s"
+
+#. translators: 1: order number, 2: bill no, 3: amount, 4: customer name, 5: order URL
+#: includes/class-shamcash-mailer.php:78
+#, php-format
+msgid ""
+"A ShamCash bill expired without payment.\n"
+"\n"
+"Order: #%1$s\n"
+"Bill No: %2$s\n"
+"Amount: %3$s\n"
+"Customer: %4$s\n"
+"\n"
+"View order: %5$s"
+msgstr "انتهت صلاحية فاتورة شام كاش دون دفع.\n\nالطلب: #%1$s\nرقم الفاتورة: %2$s\nالمبلغ: %3$s\nالعميل: %4$s\n\nعرض الطلب: %5$s"
+
+#: includes/class-shamcash-onboarding.php:120
+msgid "Enter your Agent Key"
+msgstr "إدخال مفتاح الوكيل (Agent Key)"
+
+#: includes/class-shamcash-onboarding.php:121
+msgid "Enter your Secret Key"
+msgstr "إدخال المفتاح السري (Secret Key)"
+
+#: includes/class-shamcash-onboarding.php:122
+msgid "Confirm the Base URL"
+msgstr "التأكد من الرابط الأساسي (Base URL)"
+
+#: includes/class-shamcash-onboarding.php:123
+msgid "Enable the payment gateway"
+msgstr "تفعيل بوابة الدفع"
+
+#: includes/class-shamcash-onboarding.php:124
+msgid "Save settings"
+msgstr "حفظ الإعدادات"
+
+#: includes/class-shamcash-onboarding.php:129
+msgid "ShamCash Setup Checklist"
+msgstr "إعداد شام كاش – قائمة التحقق"
+
+#: includes/class-shamcash-onboarding.php:130
+#: includes/class-shamcash-onboarding.php:131
+msgid "Dismiss this checklist"
+msgstr "إخفاء هذه القائمة"
+
+#: includes/class-shamcash-onboarding.php:136
+msgid "Welcome! Complete the steps below to start accepting ShamCash payments:"
+msgstr "مرحباً بك! أكمل الخطوات التالية لبدء قبول المدفوعات عبر شام كاش:"
+
+#: includes/class-shamcash-onboarding.php:145
+msgid "Done"
+msgstr "تم"
+
+#: includes/class-shamcash-onboarding.php:145
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: includes/class-shamcash-onboarding.php:153
+msgid "Go to ShamCash Settings"
+msgstr "الانتقال إلى إعدادات شام كاش"
+
+#: includes/class-shamcash-webhook.php:184
+msgid "ShamCash payment webhook received but bill verification failed. Manual review required."
+msgstr "تم استلام إشعار دفع شام كاش لكن فشل التحقق من الفاتورة. يلزم المراجعة اليدوية."
+
+#. translators: 1: bill amount, 2: order amount, 3: bill status id
+#: includes/class-shamcash-webhook.php:210
+#, php-format
+msgid "ShamCash bill verification mismatch (bill amount %1$s vs order %2$s, status %3$d). Held for review."
+msgstr "عدم تطابق التحقق من فاتورة شام كاش (مبلغ الفاتورة %1$s مقابل الطلب %2$s، الحالة %3$d). تم تعليقه للمراجعة."
+
+#: includes/class-shamcash-webhook.php:274
+msgid "ShamCash refund webhook received but order has no remaining refundable amount."
+msgstr "تم استلام إشعار استرداد شام كاش لكن لا يوجد مبلغ قابل للاسترداد في الطلب."
+
+#. translators: 1: transaction id
+#: includes/class-shamcash-webhook.php:306
+#, php-format
+msgid "ShamCash refund webhook. Transaction ID: %s"
+msgstr "إشعار استرداد شام كاش. رقم المعاملة: %s"
+
+#: includes/class-shamcash-webhook.php:315
+msgid "ShamCash refund webhook received but WooCommerce refund could not be created: "
+msgstr "تم استلام إشعار استرداد شام كاش لكن تعذر إنشاء استرداد ووكومرس: "
+
+#. translators: 1: amount, 2: transaction id
+#: includes/class-shamcash-webhook.php:329
+#, php-format
+msgid "ShamCash refund webhook applied for %1$s. Transaction ID: %2$s"
+msgstr "تم تطبيق إشعار استرداد شام كاش بمبلغ %1$s. رقم المعاملة: %2$s"

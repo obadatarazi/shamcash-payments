@@ -1,0 +1,49 @@
+/* ShamCash Payments – Admin styles */
+
+.shamcash-settings-section {
+    margin-top: 1.5em;
+}
+
+.shamcash-webhook-url {
+    background: #f6f7f7;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    user-select: all;
+    display: inline-block;
+    max-width: 100%;
+    word-break: break-all;
+}
+
+#order_data .order_data_column .shamcash-bill-info {
+    margin-top: 0.5em;
+}
+
+.shamcash-notice-box {
+    border-left: 4px solid #2271b1;
+    background: #f0f6fc;
+    padding: 12px 16px;
+    margin: 12px 0;
+}
+
+/* Test Connection result */
+#shamcash-test-connection-result.success {
+    background: #edfaef;
+    border: 1px solid #00a32a;
+    color: #1e1e1e;
+}
+#shamcash-test-connection-result.error {
+    background: #fcf0f1;
+    border: 1px solid #d63638;
+    color: #1e1e1e;
+}
+#shamcash-test-connection-result .dashicons {
+    vertical-align: middle;
+    margin-inline-end: 4px;
+}
+#shamcash-test-connection-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}

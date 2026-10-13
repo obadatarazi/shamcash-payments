@@ -1,0 +1,85 @@
+/* ShamCash Onboarding Checklist */
+
+.shamcash-onboarding-notice {
+    border-left: 4px solid #2271b1;
+    background: #f0f6fc;
+    padding: 16px 20px 12px;
+    margin: 15px 0;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.shamcash-onboarding-notice[dir="rtl"] {
+    border-left: none;
+    border-right: 4px solid #2271b1;
+}
+
+.shamcash-onboarding-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.shamcash-onboarding-header strong {
+    font-size: 15px;
+}
+
+.shamcash-onboarding-intro {
+    margin: 0 0 12px;
+    color: #1d2327;
+}
+
+.shamcash-checklist {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+}
+
+.shamcash-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+}
+
+.shamcash-checklist li .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.shamcash-checklist li.is-done .dashicons {
+    color: #00a32a;
+}
+
+.shamcash-checklist li.is-pending .dashicons {
+    color: #dba617;
+}
+
+.shamcash-checklist .step-label {
+    flex: 1;
+}
+
+.shamcash-checklist .step-status {
+    font-size: 12px;
+    color: #646970;
+    min-width: 70px;
+    text-align: end;
+}
+
+.shamcash-checklist li.is-done .step-status {
+    color: #00a32a;
+    font-weight: 500;
+}
+
+.shamcash-onboarding-actions {
+    margin: 0;
+}
+
+.shamcash-onboarding-notice .shamcash-dismiss {
+    position: absolute;
+    top: 10px;
+    inset-inline-end: 10px;
+}
