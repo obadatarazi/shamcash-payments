@@ -261,15 +261,15 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
 
     public function validate_base_url_field(string $key, string $value): string
     {
-        $value = esc_url_raw(trim(wp_unslash($value)));
-        if ($value === '' || !preg_match('#^https?://#i', $value)) {
+        $value = trim(wp_unslash($value));
+        if ($value === '' || !preg_match('#^https?://#i', $value) || !wp_http_validate_url($value)) {
             WC_Admin_Settings::add_error(
                 __('Base URL must be a valid http or https URL.', 'shamcash-payments')
             );
             return (string) $this->get_option($key, 'https://api.shamcash.com');
         }
 
-        return untrailingslashit($value);
+        return untrailingslashit(esc_url_raw($value));
     }
 
     public function validate_callback_url_field(string $key, string $value): string
@@ -279,15 +279,15 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
             return '';
         }
 
-        $value = esc_url_raw($value);
-        if ($value === '' || !preg_match('#^https?://#i', $value)) {
+        // Reject bare hosts like "notaurl" before esc_url_raw prepends http:// (M4).
+        if (!preg_match('#^https?://#i', $value) || !wp_http_validate_url($value)) {
             WC_Admin_Settings::add_error(
                 __('Custom Callback URL must be a valid http or https URL.', 'shamcash-payments')
             );
             return (string) $this->get_option($key);
         }
 
-        return $value;
+        return esc_url_raw($value);
     }
 
     public function validate_redirect_url_field(string $key, string $value): string
@@ -297,15 +297,14 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
             return '';
         }
 
-        $value = esc_url_raw($value);
-        if ($value === '' || !preg_match('#^https?://#i', $value)) {
+        if (!preg_match('#^https?://#i', $value) || !wp_http_validate_url($value)) {
             WC_Admin_Settings::add_error(
                 __('Custom Redirect URL must be a valid http or https URL.', 'shamcash-payments')
             );
             return (string) $this->get_option($key);
         }
 
-        return $value;
+        return esc_url_raw($value);
     }
 
     public function validate_email_recipients_field(string $key, string $value): string
@@ -341,6 +340,13 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
     public function process_admin_options(): void
     {
         parent::process_admin_options();
+
+        // Keep gateway settings (including secret) out of the alloptions autoload cache (M1).
+        $option_key = $this->get_option_key();
+        $settings   = get_option($option_key, []);
+        if (is_array($settings)) {
+            update_option($option_key, $settings, false);
+        }
 
         // Drop the legacy duplicate settings store.
         delete_option('shamcash_payments_settings');
@@ -436,14 +442,19 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
                 ];
             } catch (ApiException $e) {
                 $last_error = $e;
-                $history[]  = $bill_no;
                 $order->update_meta_data('_shamcash_bill_attempt', $attempt);
-                $order->update_meta_data('_shamcash_bill_history', $history);
-                $order->save();
 
+                // Do not record rejected "already exists" bill numbers in history (N2).
                 if ($e->isBillNoAlreadyExists() && $i < self::MAX_BILL_ATTEMPTS - 1) {
+                    $order->save();
                     continue;
                 }
+
+                if (!$e->isBillNoAlreadyExists()) {
+                    $history[] = $bill_no;
+                    $order->update_meta_data('_shamcash_bill_history', $history);
+                }
+                $order->save();
 
                 ShamCash_Logger::error('createBill ApiException: ' . ShamCash_Security::redact_for_log($e->getMessage()));
                 wc_add_notice(__('Unable to create ShamCash payment. Please try again.', 'shamcash-payments'), 'error');
@@ -530,23 +541,68 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
             return new \WP_Error('refund_failed', __('Refund request failed.', 'shamcash-payments'));
         }
 
+        $tran_id = (string) $result->tranId;
+
+        // Attach ShamCash refund tranId to the WooCommerce refund so webhooks do not double-count (N1b).
+        $this->attach_refund_tran_id($order, $refund_amount, $tran_id);
+
         $order->add_order_note(
             sprintf(
                 /* translators: 1: amount, 2: transaction id */
                 __('ShamCash refund of %1$s processed. Transaction ID: %2$s', 'shamcash-payments'),
                 $refund_amount,
-                $result->tranId
+                $tran_id
             )
         );
+        $order->save();
 
         ShamCash_Logger::info(sprintf(
             'Refund processed for order #%d – amount: %s, tranId: %s',
             $order->get_id(),
             $refund_amount,
-            $result->tranId
+            $tran_id
         ));
 
         return true;
+    }
+
+    /**
+     * Store ShamCash refund transaction id on the matching WooCommerce refund object.
+     */
+    private function attach_refund_tran_id(\WC_Order $order, string $refund_amount, string $tran_id): void
+    {
+        if ($tran_id === '') {
+            return;
+        }
+
+        foreach ($order->get_refunds() as $refund) {
+            $existing = (string) $refund->get_meta('_shamcash_refund_tran_id');
+            if ($existing !== '') {
+                if ($existing === $tran_id) {
+                    return;
+                }
+                continue;
+            }
+
+            $amount = number_format((float) $refund->get_amount(), 2, '.', '');
+            if ($amount !== $refund_amount) {
+                continue;
+            }
+
+            $refund->update_meta_data('_shamcash_refund_tran_id', $tran_id);
+            $refund->save();
+            return;
+        }
+
+        // Fallback: mark on the order so webhook handlers can still skip this tranId.
+        $seen = $order->get_meta('_shamcash_refund_tran_ids');
+        if (!is_array($seen)) {
+            $seen = [];
+        }
+        if (!in_array($tran_id, $seen, true)) {
+            $seen[] = $tran_id;
+            $order->update_meta_data('_shamcash_refund_tran_ids', array_slice($seen, -50));
+        }
     }
 
     private function map_currency(string $code): ?Currency
@@ -587,6 +643,11 @@ final class ShamCash_Gateway extends WC_Payment_Gateway
      */
     public function generate_shamcash_test_button_html(string $key, array $data): string
     {
+        // Hide Test Connection from users without manage_options (N8).
+        if (!current_user_can('manage_options')) {
+            return '';
+        }
+
         $defaults = [
             'title'       => '',
             'description' => '',

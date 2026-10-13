@@ -28,7 +28,7 @@ The bundled PHP client is based on the [ShamCash PHP SDK](https://github.com/OkT
 * Debug logging integrated with WooCommerce logs
 * HPOS (High-Performance Order Storage) compatible
 * Uses WordPress HTTP API (no Composer / Guzzle required on the site)
-* Fully translated (English + Arabic)
+* English and Arabic language files included
 * PHP 8.2+ and latest WordPress / WooCommerce ready
 
 **Supported currencies**

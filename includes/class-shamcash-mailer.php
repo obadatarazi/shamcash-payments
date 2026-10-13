@@ -32,9 +32,7 @@ final class ShamCash_Mailer
             $order->get_order_number()
         );
 
-        $amount = wp_strip_all_tags(
-            wc_price((float) $order->get_total(), ['currency' => $order->get_currency()])
-        );
+        $amount = self::plain_amount($order);
 
         $body = sprintf(
             /* translators: 1: order number, 2: bill no, 3: transaction id, 4: amount, 5: customer name, 6: order URL */
@@ -69,9 +67,7 @@ final class ShamCash_Mailer
             $order->get_order_number()
         );
 
-        $amount = wp_strip_all_tags(
-            wc_price((float) $order->get_total(), ['currency' => $order->get_currency()])
-        );
+        $amount = self::plain_amount($order);
 
         $body = sprintf(
             /* translators: 1: order number, 2: bill no, 3: amount, 4: customer name, 5: order URL */
@@ -106,6 +102,18 @@ final class ShamCash_Mailer
             }
         }
         return $valid;
+    }
+
+    /**
+     * Plain-text money for emails — decode entities like &#36; from wc_price() (L1).
+     */
+    private static function plain_amount(\WC_Order $order): string
+    {
+        $html = wp_strip_all_tags(
+            wc_price((float) $order->get_total(), ['currency' => $order->get_currency()])
+        );
+
+        return html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     /**

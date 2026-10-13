@@ -128,8 +128,9 @@ final class ShamCash_Webhook
         }
 
         if (!$this->acquire_lock($order->get_id())) {
+            // Ask ShamCash to retry — another webhook is handling this order (N4).
             ShamCash_Logger::debug('Webhook lock busy for order #' . $order->get_id());
-            return new \WP_REST_Response(['message' => 'OK – locked'], 200);
+            return new \WP_REST_Response(['message' => 'Locked – retry'], 503);
         }
 
         try {
@@ -142,15 +143,22 @@ final class ShamCash_Webhook
                 return new \WP_REST_Response(['message' => 'OK – already processed'], 200);
             }
 
+            $mark_done = true;
+
             if ($event->status === BillStatus::Paid) {
-                $this->handle_paid($order, $event, $client);
+                $mark_done = $this->handle_paid($order, $event, $client);
             } elseif ($event->status === BillStatus::Expired) {
                 $this->handle_expired($order, $event);
             } elseif (
                 $event->status === BillStatus::Refund
                 || $event->status === BillStatus::PartlyRefunded
             ) {
-                $this->handle_refund($order, $event, $client);
+                $mark_done = $this->handle_refund($order, $event, $client);
+            }
+
+            if (!$mark_done) {
+                // Transient failure (e.g. getBill) — do not mark done; ask ShamCash to retry (N3).
+                return new \WP_REST_Response(['message' => 'Temporary failure – retry'], 503);
             }
 
             $processed[] = $event_key;
@@ -168,10 +176,13 @@ final class ShamCash_Webhook
         return new \WP_REST_Response(['message' => 'OK'], 200);
     }
 
-    private function handle_paid(\WC_Order $order, object $event, \OkToCode\ShamCash\Client $client): void
+    /**
+     * @return bool True when the event may be marked processed; false to request a retry.
+     */
+    private function handle_paid(\WC_Order $order, object $event, \OkToCode\ShamCash\Client $client): bool
     {
         if ($order->is_paid()) {
-            return;
+            return true;
         }
 
         // Server-side verification before completing payment.
@@ -179,11 +190,8 @@ final class ShamCash_Webhook
             $bill = $client->getBill($event->billNo);
         } catch (\Throwable $e) {
             ShamCash_Logger::error('getBill verification failed for order #' . $order->get_id() . ': ' . ShamCash_Security::redact_for_log($e->getMessage()));
-            $order->update_status(
-                'on-hold',
-                __('ShamCash payment webhook received but bill verification failed. Manual review required.', 'shamcash-payments')
-            );
-            return;
+            // Do not mark as processed — return 503 so ShamCash retries (N3).
+            return false;
         }
 
         $expected_amount = number_format((float) $order->get_total(), 2, '.', '');
@@ -213,7 +221,7 @@ final class ShamCash_Webhook
                     $bill->statusId
                 )
             );
-            return;
+            return true;
         }
 
         $settings      = ShamCash_Client_Factory::settings();
@@ -235,6 +243,8 @@ final class ShamCash_Webhook
         ShamCash_Logger::info('Order #' . $order->get_id() . ' marked as paid via webhook');
 
         ShamCash_Mailer::notify_paid($order, $event->billNo, $event->tranId);
+
+        return true;
     }
 
     private function handle_expired(\WC_Order $order, object $event): void
@@ -256,15 +266,24 @@ final class ShamCash_Webhook
         ShamCash_Mailer::notify_failed($order, $event->billNo);
     }
 
-    private function handle_refund(\WC_Order $order, object $event, \OkToCode\ShamCash\Client $client): void
+    /**
+     * @return bool True when the event may be marked processed; false to request a retry.
+     */
+    private function handle_refund(\WC_Order $order, object $event, \OkToCode\ShamCash\Client $client): bool
     {
         $tran_id = $event->tranId ? (string) $event->tranId : '';
         if ($tran_id !== '') {
             foreach ($order->get_refunds() as $existing) {
                 if ($existing->get_meta('_shamcash_refund_tran_id') === $tran_id) {
                     ShamCash_Logger::debug('Refund webhook already applied for tranId ' . $tran_id);
-                    return;
+                    return true;
                 }
+            }
+
+            $seen = $order->get_meta('_shamcash_refund_tran_ids');
+            if (is_array($seen) && in_array($tran_id, $seen, true)) {
+                ShamCash_Logger::debug('Refund webhook already recorded on order for tranId ' . $tran_id);
+                return true;
             }
         }
 
@@ -273,7 +292,7 @@ final class ShamCash_Webhook
             $order->add_order_note(
                 __('ShamCash refund webhook received but order has no remaining refundable amount.', 'shamcash-payments')
             );
-            return;
+            return true;
         }
 
         $amount = $remaining;
@@ -292,10 +311,12 @@ final class ShamCash_Webhook
             }
         } catch (\Throwable $e) {
             ShamCash_Logger::warning('getBill for refund webhook failed: ' . ShamCash_Security::redact_for_log($e->getMessage()));
+            // Need the bill amount to avoid guessing — ask ShamCash to retry (N3).
+            return false;
         }
 
         if ($amount <= 0) {
-            return;
+            return true;
         }
 
         $refund = wc_create_refund([
@@ -315,24 +336,35 @@ final class ShamCash_Webhook
                 __('ShamCash refund webhook received but WooCommerce refund could not be created: ', 'shamcash-payments')
                 . $refund->get_error_message()
             );
-            return;
+            return true;
         }
 
         if ($tran_id !== '') {
             $refund->update_meta_data('_shamcash_refund_tran_id', $tran_id);
             $refund->save();
+
+            $seen = $order->get_meta('_shamcash_refund_tran_ids');
+            if (!is_array($seen)) {
+                $seen = [];
+            }
+            if (!in_array($tran_id, $seen, true)) {
+                $seen[] = $tran_id;
+                $order->update_meta_data('_shamcash_refund_tran_ids', array_slice($seen, -50));
+            }
         }
 
         $order->add_order_note(
             sprintf(
                 /* translators: 1: amount, 2: transaction id */
                 __('ShamCash refund webhook applied for %1$s. Transaction ID: %2$s', 'shamcash-payments'),
-                wp_strip_all_tags(wc_price($amount, ['currency' => $order->get_currency()])),
+                html_entity_decode(wp_strip_all_tags(wc_price($amount, ['currency' => $order->get_currency()])), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 $tran_id !== '' ? $tran_id : 'n/a'
             )
         );
 
         ShamCash_Logger::info('Refund webhook applied for order #' . $order->get_id());
+
+        return true;
     }
 
     private function find_order_by_bill_no(string $billNo): ?\WC_Order

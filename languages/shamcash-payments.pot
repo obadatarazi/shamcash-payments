@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-13T07:35:09+00:00\n"
+"POT-Creation-Date: 2026-10-13T08:02:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: shamcash-payments\n"
 
 #. Plugin Name of the plugin
 #: shamcash-payments.php
-#: includes/class-shamcash-plugin.php:86
+#: includes/class-shamcash-plugin.php:73
 msgid "ShamCash Payments"
 msgstr ""
 
@@ -28,7 +28,7 @@ msgstr ""
 
 #. Description of the plugin
 #: shamcash-payments.php
-msgid "Accept ShamCash payments in WooCommerce. Create bills, process refunds, handle encrypted webhooks, and manage transactions with a clean admin experience. Fully translated (English + Arabic)."
+msgid "Accept ShamCash payments in WooCommerce. Create bills, process refunds, handle encrypted webhooks, and manage transactions with a clean admin experience. English and Arabic translations included."
 msgstr ""
 
 #. Author of the plugin
@@ -61,21 +61,21 @@ msgstr ""
 msgid "Connection failed"
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:81
+#: includes/class-shamcash-connection-tester.php:82
 #: includes/class-shamcash-security.php:25
 msgid "You do not have permission to perform this action."
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:106
+#: includes/class-shamcash-connection-tester.php:108
 msgid "Please enter Agent Key, Secret Key and Base URL first."
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:112
+#: includes/class-shamcash-connection-tester.php:114
 msgid "Base URL is not allowed. Use the saved Base URL or an official ShamCash host."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/class-shamcash-connection-tester.php:127
+#: includes/class-shamcash-connection-tester.php:128
 #, php-format
 msgid "Invalid credentials: %s"
 msgstr ""
@@ -85,43 +85,49 @@ msgid "Connection successful. Credentials verified with ShamCash servers."
 msgstr ""
 
 #. translators: %s: API message
-#: includes/class-shamcash-connection-tester.php:162
+#: includes/class-shamcash-connection-tester.php:161
 #, php-format
 msgid "Successfully reached the server (encryption & key verified). API message: %s"
 msgstr ""
 
+#: includes/class-shamcash-connection-tester.php:171
+msgid "Encryption/decryption failed. Please check the Secret Key."
+msgstr ""
+
+#: includes/class-shamcash-connection-tester.php:175
+msgid "An unexpected error occurred during the test."
+msgstr ""
+
+#. translators: %s: hostname
+#: includes/class-shamcash-connection-tester.php:195
+#, php-format
+msgid "Could not resolve host “%s”. Check the Base URL spelling and your server DNS."
+msgstr ""
+
 #. translators: %s: error details
-#: includes/class-shamcash-connection-tester.php:172
+#: includes/class-shamcash-connection-tester.php:202
 #, php-format
 msgid "Could not reach ShamCash server. Check Base URL or network. Details: %s"
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:179
-msgid "Encryption/decryption failed. Please check the Secret Key."
-msgstr ""
-
-#: includes/class-shamcash-connection-tester.php:183
-msgid "An unexpected error occurred during the test."
-msgstr ""
-
-#: includes/class-shamcash-connection-tester.php:221
+#: includes/class-shamcash-connection-tester.php:240
 msgid "Connection failed: invalid Agent Key (1701)."
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:222
+#: includes/class-shamcash-connection-tester.php:241
 msgid "Connection failed: agent is not active (1702)."
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:223
+#: includes/class-shamcash-connection-tester.php:242
 msgid "Connection failed: invalid encrypted data / Secret Key (1705)."
 msgstr ""
 
-#: includes/class-shamcash-connection-tester.php:224
+#: includes/class-shamcash-connection-tester.php:243
 msgid "Connection failed: account is blocked (1706)."
 msgstr ""
 
 #. translators: 1: result code, 2: API message
-#: includes/class-shamcash-connection-tester.php:227
+#: includes/class-shamcash-connection-tester.php:246
 #, php-format
 msgid "Connection failed (%1$d): %2$s"
 msgstr ""
@@ -309,88 +315,88 @@ msgid "Logs appear under WooCommerce → Status → Logs (source: shamcash-payme
 msgstr ""
 
 #. translators: %s: last 4 characters of the saved secret
-#: includes/class-shamcash-gateway.php:223
+#: includes/class-shamcash-gateway.php:210
 #, php-format
 msgid "Saved, ends in %s. Leave blank to keep the current secret."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:267
+#: includes/class-shamcash-gateway.php:254
 msgid "Secret Key must be a Base64-encoded 32-byte value."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:280
+#: includes/class-shamcash-gateway.php:267
 msgid "Base URL must be a valid http or https URL."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:298
+#: includes/class-shamcash-gateway.php:285
 msgid "Custom Callback URL must be a valid http or https URL."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:316
+#: includes/class-shamcash-gateway.php:302
 msgid "Custom Redirect URL must be a valid http or https URL."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:347
+#: includes/class-shamcash-gateway.php:333
 msgid "One or more email recipients are invalid."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:370
-#: includes/class-shamcash-gateway.php:510
+#: includes/class-shamcash-gateway.php:363
+#: includes/class-shamcash-gateway.php:508
 #: includes/class-shamcash-order-handler.php:49
 msgid "Order not found."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:376
+#: includes/class-shamcash-gateway.php:369
 msgid "ShamCash is not configured. Please contact the store owner."
 msgstr ""
 
 #. translators: %s: currency code
-#: includes/class-shamcash-gateway.php:388
+#: includes/class-shamcash-gateway.php:381
 #, php-format
 msgid "Currency %s is not supported by ShamCash."
 msgstr ""
 
 #. translators: 1: bill number
-#: includes/class-shamcash-gateway.php:433
+#: includes/class-shamcash-gateway.php:426
 #, php-format
 msgid "ShamCash bill created: %s. Customer redirected to payment page."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:462
+#: includes/class-shamcash-gateway.php:460
 msgid "Unable to create ShamCash payment. Please try again."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:466
+#: includes/class-shamcash-gateway.php:464
 msgid "Payment service temporarily unavailable. Please try again later."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:470
+#: includes/class-shamcash-gateway.php:468
 msgid "An unexpected error occurred. Please try again."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:477
+#: includes/class-shamcash-gateway.php:475
 msgid "Unable to create a unique ShamCash payment bill after several attempts. Please try again or contact support."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:515
+#: includes/class-shamcash-gateway.php:513
 msgid "No ShamCash bill found for this order."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:520
+#: includes/class-shamcash-gateway.php:518
 msgid "ShamCash is not configured."
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:543
+#: includes/class-shamcash-gateway.php:541
 msgid "Refund request failed."
 msgstr ""
 
 #. translators: 1: amount, 2: transaction id
-#: includes/class-shamcash-gateway.php:549
+#: includes/class-shamcash-gateway.php:552
 #, php-format
 msgid "ShamCash refund of %1$s processed. Transaction ID: %2$s"
 msgstr ""
 
-#: includes/class-shamcash-gateway.php:618
+#: includes/class-shamcash-gateway.php:666
 msgid "Test Connection Now"
 msgstr ""
 
@@ -401,7 +407,7 @@ msgid "[%1$s] ShamCash payment received – Order #%2$s"
 msgstr ""
 
 #. translators: 1: order number, 2: bill no, 3: transaction id, 4: amount, 5: customer name, 6: order URL
-#: includes/class-shamcash-mailer.php:41
+#: includes/class-shamcash-mailer.php:39
 #, php-format
 msgid ""
 "A ShamCash payment was successfully received.\n"
@@ -416,13 +422,13 @@ msgid ""
 msgstr ""
 
 #. translators: 1: site name, 2: order number
-#: includes/class-shamcash-mailer.php:67
+#: includes/class-shamcash-mailer.php:65
 #, php-format
 msgid "[%1$s] ShamCash bill expired – Order #%2$s"
 msgstr ""
 
 #. translators: 1: order number, 2: bill no, 3: amount, 4: customer name, 5: order URL
-#: includes/class-shamcash-mailer.php:78
+#: includes/class-shamcash-mailer.php:74
 #, php-format
 msgid ""
 "A ShamCash bill expired without payment.\n"
@@ -435,48 +441,48 @@ msgid ""
 "View order: %5$s"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:120
+#: includes/class-shamcash-onboarding.php:145
 msgid "Enter your Agent Key"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:121
+#: includes/class-shamcash-onboarding.php:146
 msgid "Enter your Secret Key"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:122
+#: includes/class-shamcash-onboarding.php:147
 msgid "Confirm the Base URL"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:123
+#: includes/class-shamcash-onboarding.php:148
 msgid "Enable the payment gateway"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:124
+#: includes/class-shamcash-onboarding.php:149
 msgid "Save settings"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:129
+#: includes/class-shamcash-onboarding.php:154
 msgid "ShamCash Setup Checklist"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:130
-#: includes/class-shamcash-onboarding.php:131
+#: includes/class-shamcash-onboarding.php:155
+#: includes/class-shamcash-onboarding.php:156
 msgid "Dismiss this checklist"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:136
+#: includes/class-shamcash-onboarding.php:161
 msgid "Welcome! Complete the steps below to start accepting ShamCash payments:"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:145
+#: includes/class-shamcash-onboarding.php:170
 msgid "Done"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:145
+#: includes/class-shamcash-onboarding.php:170
 msgid "Pending"
 msgstr ""
 
-#: includes/class-shamcash-onboarding.php:153
+#: includes/class-shamcash-onboarding.php:178
 msgid "Go to ShamCash Settings"
 msgstr ""
 
@@ -509,12 +515,12 @@ msgid "ShamCash Bill"
 msgstr ""
 
 #. translators: %s: settings link HTML
-#: includes/class-shamcash-plugin.php:91
+#: includes/class-shamcash-plugin.php:78
 #, php-format
 msgid "Please configure your ShamCash API credentials to start accepting payments. %s"
 msgstr ""
 
-#: includes/class-shamcash-plugin.php:92
+#: includes/class-shamcash-plugin.php:79
 msgid "Go to settings"
 msgstr ""
 
@@ -534,46 +540,42 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/class-shamcash-webhook.php:184
-msgid "ShamCash payment webhook received but bill verification failed. Manual review required."
-msgstr ""
-
 #. translators: 1: bill amount, 2: order amount, 3: bill status id
-#: includes/class-shamcash-webhook.php:210
+#: includes/class-shamcash-webhook.php:218
 #, php-format
 msgid "ShamCash bill verification mismatch (bill amount %1$s vs order %2$s, status %3$d). Held for review."
 msgstr ""
 
 #. translators: 1: transaction id
-#: includes/class-shamcash-webhook.php:226
+#: includes/class-shamcash-webhook.php:234
 #, php-format
 msgid "ShamCash payment completed. Transaction ID: %s"
 msgstr ""
 
-#: includes/class-shamcash-webhook.php:232
+#: includes/class-shamcash-webhook.php:240
 msgid "Status updated by ShamCash webhook."
 msgstr ""
 
-#: includes/class-shamcash-webhook.php:251
+#: includes/class-shamcash-webhook.php:261
 msgid "ShamCash bill expired (customer did not complete payment within the time limit)."
 msgstr ""
 
-#: includes/class-shamcash-webhook.php:274
+#: includes/class-shamcash-webhook.php:293
 msgid "ShamCash refund webhook received but order has no remaining refundable amount."
 msgstr ""
 
 #. translators: 1: transaction id
-#: includes/class-shamcash-webhook.php:306
+#: includes/class-shamcash-webhook.php:327
 #, php-format
 msgid "ShamCash refund webhook. Transaction ID: %s"
 msgstr ""
 
-#: includes/class-shamcash-webhook.php:315
+#: includes/class-shamcash-webhook.php:336
 msgid "ShamCash refund webhook received but WooCommerce refund could not be created: "
 msgstr ""
 
 #. translators: 1: amount, 2: transaction id
-#: includes/class-shamcash-webhook.php:329
+#: includes/class-shamcash-webhook.php:359
 #, php-format
 msgid "ShamCash refund webhook applied for %1$s. Transaction ID: %2$s"
 msgstr ""

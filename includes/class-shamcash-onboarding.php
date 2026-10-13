@@ -77,6 +77,10 @@ final class ShamCash_Onboarding
             return false;
         }
 
+        if (!$this->is_allowed_screen()) {
+            return false;
+        }
+
         if (get_user_meta(get_current_user_id(), 'shamcash_onboarding_dismissed', true)) {
             return false;
         }
@@ -86,6 +90,27 @@ final class ShamCash_Onboarding
         }
 
         return true;
+    }
+
+    /**
+     * Checklist + assets only on Dashboard and WooCommerce screens (L6 / N7).
+     */
+    private function is_allowed_screen(): bool
+    {
+        if (!function_exists('get_current_screen')) {
+            return false;
+        }
+
+        $screen = get_current_screen();
+        if (!$screen || !isset($screen->id)) {
+            return false;
+        }
+
+        $id = (string) $screen->id;
+
+        return $id === 'dashboard'
+            || str_contains($id, 'woocommerce')
+            || str_contains($id, 'wc-');
     }
 
     private function is_fully_configured(): bool

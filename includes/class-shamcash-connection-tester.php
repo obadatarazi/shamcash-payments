@@ -78,7 +78,8 @@ final class ShamCash_Connection_Tester
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error([
-                'message' => esc_html__('You do not have permission to perform this action.', 'shamcash-payments'),
+                // Plain text — JS uses createTextNode (avoid double-encoding &amp;) (N6).
+                'message' => __('You do not have permission to perform this action.', 'shamcash-payments'),
             ], 403);
         }
 
@@ -86,8 +87,9 @@ final class ShamCash_Connection_Tester
         $secret = isset($_POST['secret_key'])
             ? (preg_replace('/[\x00-\x1F\x7F]/', '', trim(wp_unslash((string) $_POST['secret_key']))) ?? '')
             : '';
-        $base   = isset($_POST['base_url'])
-            ? esc_url_raw(trim(wp_unslash((string) $_POST['base_url'])))
+        $base_raw = isset($_POST['base_url']) ? trim(wp_unslash((string) $_POST['base_url'])) : '';
+        $base     = ($base_raw !== '' && preg_match('#^https?://#i', $base_raw) && wp_http_validate_url($base_raw))
+            ? esc_url_raw($base_raw)
             : '';
 
         $saved = ShamCash_Client_Factory::settings();
@@ -103,13 +105,13 @@ final class ShamCash_Connection_Tester
 
         if ($agent === '' || $secret === '' || $base === '') {
             wp_send_json_error([
-                'message' => esc_html__('Please enter Agent Key, Secret Key and Base URL first.', 'shamcash-payments'),
+                'message' => __('Please enter Agent Key, Secret Key and Base URL first.', 'shamcash-payments'),
             ]);
         }
 
         if (!$this->is_allowed_base_url($base, $saved)) {
             wp_send_json_error([
-                'message' => esc_html__('Base URL is not allowed. Use the saved Base URL or an official ShamCash host.', 'shamcash-payments'),
+                'message' => __('Base URL is not allowed. Use the saved Base URL or an official ShamCash host.', 'shamcash-payments'),
             ]);
         }
 
@@ -121,12 +123,10 @@ final class ShamCash_Connection_Tester
             );
         } catch (\Throwable $e) {
             wp_send_json_error([
-                'message' => esc_html(
-                    sprintf(
-                        /* translators: %s: error message */
-                        __('Invalid credentials: %s', 'shamcash-payments'),
-                        $e->getMessage()
-                    )
+                'message' => sprintf(
+                    /* translators: %s: error message */
+                    __('Invalid credentials: %s', 'shamcash-payments'),
+                    $e->getMessage()
                 ),
             ]);
         }
@@ -137,7 +137,7 @@ final class ShamCash_Connection_Tester
             $client->listTransactions($from, $to, 0, 10);
 
             wp_send_json_success([
-                'message' => esc_html__('Connection successful. Credentials verified with ShamCash servers.', 'shamcash-payments'),
+                'message' => __('Connection successful. Credentials verified with ShamCash servers.', 'shamcash-payments'),
             ]);
         } catch (ApiException $e) {
             $code = $e->resultCode;
@@ -150,39 +150,58 @@ final class ShamCash_Connection_Tester
 
             if (in_array($code, $fail_codes, true)) {
                 wp_send_json_error([
-                    'message' => esc_html($this->message_for_result_code($code, $e->apiMessage)),
+                    'message' => $this->message_for_result_code($code, $e->apiMessage),
                 ]);
             }
 
             // Harmless business codes (e.g. 1703 BillNotFound) still prove encryption + reachability.
             wp_send_json_success([
-                'message' => esc_html(
-                    sprintf(
-                        /* translators: %s: API message */
-                        __('Successfully reached the server (encryption & key verified). API message: %s', 'shamcash-payments'),
-                        $e->apiMessage
-                    )
+                'message' => sprintf(
+                    /* translators: %s: API message */
+                    __('Successfully reached the server (encryption & key verified). API message: %s', 'shamcash-payments'),
+                    $e->apiMessage
                 ),
             ]);
         } catch (TransportException $e) {
             wp_send_json_error([
-                'message' => esc_html(
-                    sprintf(
-                        /* translators: %s: error details */
-                        __('Could not reach ShamCash server. Check Base URL or network. Details: %s', 'shamcash-payments'),
-                        $e->getMessage()
-                    )
-                ),
+                'message' => $this->transport_error_message($e, $base),
             ]);
         } catch (CryptoException $e) {
             wp_send_json_error([
-                'message' => esc_html__('Encryption/decryption failed. Please check the Secret Key.', 'shamcash-payments'),
+                'message' => __('Encryption/decryption failed. Please check the Secret Key.', 'shamcash-payments'),
             ]);
         } catch (\Throwable $e) {
             wp_send_json_error([
-                'message' => esc_html__('An unexpected error occurred during the test.', 'shamcash-payments'),
+                'message' => __('An unexpected error occurred during the test.', 'shamcash-payments'),
             ]);
         }
+    }
+
+    private function transport_error_message(TransportException $e, string $base): string
+    {
+        $raw  = $e->getMessage();
+        $host = (string) (wp_parse_url($base, PHP_URL_HOST) ?: '');
+
+        // Friendly message when DNS / host cannot be resolved (N5).
+        if (
+            stripos($raw, 'Could not resolve host') !== false
+            || stripos($raw, 'getaddrinfo') !== false
+            || stripos($raw, 'name or service not known') !== false
+            || stripos($raw, 'nodename nor servname') !== false
+            || (str_contains($raw, 'cURL error 6'))
+        ) {
+            return sprintf(
+                /* translators: %s: hostname */
+                __('Could not resolve host “%s”. Check the Base URL spelling and your server DNS.', 'shamcash-payments'),
+                $host !== '' ? $host : $base
+            );
+        }
+
+        return sprintf(
+            /* translators: %s: error details */
+            __('Could not reach ShamCash server. Check Base URL or network. Details: %s', 'shamcash-payments'),
+            $raw
+        );
     }
 
     /**

@@ -62,17 +62,19 @@ final class ShamCash_Security
             ? preg_replace('/[\x00-\x1F\x7F]/', '', trim(wp_unslash((string) $input['secret_key'])))
             : '';
 
-        $clean['base_url'] = isset($input['base_url'])
-            ? esc_url_raw(trim(wp_unslash((string) $input['base_url'])))
-            : '';
+        $clean['base_url'] = self::sanitize_http_url(
+            isset($input['base_url']) ? (string) $input['base_url'] : ''
+        );
 
-        $clean['callback_url'] = isset($input['callback_url'])
-            ? esc_url_raw(trim(wp_unslash((string) $input['callback_url'])))
-            : '';
+        $clean['callback_url'] = self::sanitize_http_url(
+            isset($input['callback_url']) ? (string) $input['callback_url'] : '',
+            true
+        );
 
-        $clean['redirect_url'] = isset($input['redirect_url'])
-            ? esc_url_raw(trim(wp_unslash((string) $input['redirect_url'])))
-            : '';
+        $clean['redirect_url'] = self::sanitize_http_url(
+            isset($input['redirect_url']) ? (string) $input['redirect_url'] : '',
+            true
+        );
 
         $clean['title'] = isset($input['title'])
             ? sanitize_text_field(wp_unslash((string) $input['title']))
@@ -101,6 +103,25 @@ final class ShamCash_Security
             : '';
 
         return $clean;
+    }
+
+    /**
+     * Sanitize an http(s) URL without letting esc_url_raw invent a scheme (M4).
+     *
+     * @param bool $allow_empty When true, empty input stays empty instead of failing.
+     */
+    public static function sanitize_http_url(string $value, bool $allow_empty = false): string
+    {
+        $value = trim(wp_unslash($value));
+        if ($value === '') {
+            return $allow_empty ? '' : '';
+        }
+
+        if (!preg_match('#^https?://#i', $value) || !wp_http_validate_url($value)) {
+            return '';
+        }
+
+        return esc_url_raw($value);
     }
 
     /**

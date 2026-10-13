@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       ShamCash Payments
  * Plugin URI:        https://sy.linkedin.com/in/obada-tarazi
- * Description:       Accept ShamCash payments in WooCommerce. Create bills, process refunds, handle encrypted webhooks, and manage transactions with a clean admin experience. Fully translated (English + Arabic).
+ * Description:       Accept ShamCash payments in WooCommerce. Create bills, process refunds, handle encrypted webhooks, and manage transactions with a clean admin experience. English and Arabic translations included.
  * Version:           1.0.0
  * Requires at least: 6.4
  * Requires PHP:      8.2
@@ -44,6 +44,38 @@ spl_autoload_register(static function (string $class): void {
 });
 
 /**
+ * Declare Blocks/HPOS compatibility early — before_woocommerce_init has already
+ * fired if we wait until plugins_loaded priority 20.
+ */
+add_action('before_woocommerce_init', static function (): void {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            'cart_checkout_blocks',
+            SHAMCASH_PAYMENTS_FILE,
+            true
+        );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+            'custom_order_tables',
+            SHAMCASH_PAYMENTS_FILE,
+            true
+        );
+    }
+});
+
+/**
+ * Register block checkout payment method when WooCommerce Blocks loads.
+ * Must be hooked at file load time so we do not miss woocommerce_blocks_loaded.
+ */
+add_action('woocommerce_blocks_loaded', static function (): void {
+    if (!class_exists(\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType::class)) {
+        return;
+    }
+
+    require_once SHAMCASH_PAYMENTS_PATH . 'includes/blocks/class-shamcash-blocks.php';
+    ShamCash_Blocks::init();
+});
+
+/**
  * Bootstrap the plugin after all plugins are loaded.
  */
 add_action('plugins_loaded', static function (): void {
@@ -75,16 +107,8 @@ add_action('plugins_loaded', static function (): void {
             $gateways[] = 'ShamCash_Gateway';
             return $gateways;
         });
-
-        add_action('woocommerce_blocks_loaded', static function (): void {
-            if (!class_exists(\Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType::class)) {
-                return;
-            }
-            require_once SHAMCASH_PAYMENTS_PATH . 'includes/blocks/class-shamcash-blocks.php';
-            ShamCash_Blocks::init();
-        });
     }
-}, 20);
+}, 10);
 
 /**
  * Activation

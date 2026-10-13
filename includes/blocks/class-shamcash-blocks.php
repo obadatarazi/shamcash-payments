@@ -75,19 +75,8 @@ final class ShamCash_Blocks
 {
     public static function init(): void
     {
-        add_action('before_woocommerce_init', [self::class, 'declare_compatibility']);
+        // Compatibility is declared from shamcash-payments.php on before_woocommerce_init.
         add_action('woocommerce_blocks_payment_method_type_registration', [self::class, 'register']);
-    }
-
-    public static function declare_compatibility(): void
-    {
-        if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                'cart_checkout_blocks',
-                SHAMCASH_PAYMENTS_FILE,
-                true
-            );
-        }
     }
 
     /**

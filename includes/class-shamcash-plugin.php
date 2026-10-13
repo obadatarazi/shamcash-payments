@@ -36,20 +36,7 @@ final class ShamCash_Plugin
 
         ShamCash_Webhook::instance()->init();
 
-        add_action('before_woocommerce_init', static function (): void {
-            if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
-                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                    'custom_order_tables',
-                    SHAMCASH_PAYMENTS_FILE,
-                    true
-                );
-                \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
-                    'cart_checkout_blocks',
-                    SHAMCASH_PAYMENTS_FILE,
-                    true
-                );
-            }
-        });
+        // Compatibility declarations live in shamcash-payments.php (before_woocommerce_init).
 
         add_action('admin_notices', [$this, 'maybe_show_setup_notice']);
         add_action('wp_ajax_shamcash_dismiss_setup_notice', [$this, 'ajax_dismiss_setup_notice']);
